@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h2, h3 {
+            color: #444;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header */
+        #header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #header .logo {
+            height: 40px;
+        }
+
+        #navbar {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        #navbar li a {
+            color: #fff;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        #navbar li a:hover {
+            color: #088178;
+        }
+
+        #navbar li a.active {
+            color: #088178;
+        }
+
+        /* Main Cart Section */
+        .section-p1 {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cart-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: 600;
+        }
+
+        td img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .remove-cart {
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-cart:hover {
+            background-color: #ff4c4c;
+        }
+
+        /* Billing Section */
+        .billing-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .billing-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .billing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .billing-table strong {
+            color: #444;
+        }
+
+        /* Address Form */
+        .address-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .address-form input:focus {
+            border-color: #ff6b6b;
+            outline: none;
+        }
+
+        /* Payment Mode */
+        .payment-mode {
+            margin-bottom: 20px;
+        }
+
+        .payment-mode select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Buttons */
+        .buttons-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .checkout, .clear-cart {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .checkout:hover {
+            background-color: #218838;
+        }
+
+        .clear-cart {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .clear-cart:hover {
+            background-color: #c82333;
+        }
+
+        /* Order Success Message */
+        .order-success {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Responsive Layout */
+        @media (min-width: 768px) {
+            .section-p1 {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+                align-items: start;
+            }
+
+            .billing-container {
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .buttons-container {
+                flex-direction: column;
+            }
+
+            .checkout, .clear-cart {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section id="header">
+        <a href="#"><img src="img/logo.png" class="logo" alt="Company Logo"></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a class="active" href="cart.html"><i class="fas fa-cart-plus"></i></a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="cart" class="section-p1">
+        <div class="cart-container">
+            <h2>Your Shopping Cart</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Cart items will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="billing-container">
+            <div class="address-form">
+                <h3>Shipping Address</h3>
+                <input type="text" id="name" placeholder="Full Name">
+                <input type="text" id="street" placeholder="Street Address">
+                <input type="text" id="city" placeholder="City">
+                <input type="text" id="state" placeholder="State">
+                <input type="text" id="zip" placeholder="ZIP Code">
+                <input type="text" id="country" placeholder="Country">
+            </div>
+
+            <div class="payment-mode">
+                <h3>Payment Mode</h3>
+                <select id="payment-mode">
+                    <option value="credit-card">Credit Card</option>
+                    <option value="debit-card">Debit Card</option>
+                    <option value="upi">UPI</option>
+                    <option value="cod">Cash on Delivery</option>
+                </select>
+            </div>
+
+            <table class="billing-table">
+                <tr><td>Subtotal:</td><td>₹<span id="subtotal">0.00</span></td></tr>
+                <tr><td>GST (10%):</td><td>₹<span id="gst">0.00</span></td></tr>
+                <tr><td>Packing Fees:</td><td>₹<span id="packing-fees">5.00</span></td></tr>
+                <tr><td><strong>Total Bill:</strong></td><td><strong>₹<span id="total-bill">0.00</span></strong></td></tr>
+            </table>
+        </div>
+    </section>
+
+    <div class="buttons-container">
+        <button class="checkout">Checkout</button>
+        <button class="clear-cart">Clear Cart</button>
+    </div>
+
+    <div class="order-success" id="order-success">
+        <h3>Order Placed Successfully!</h3>
+        <p>Thank you for your purchase.</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartItemsContainer = document.getElementById("cart-items");
+            const subtotalElement = document.getElementById("subtotal");
+            const gstElement = document.getElementById("gst");
+            const packingFeesElement = document.getElementById("packing-fees");
+            const totalBillElement = document.getElementById("total-bill");
+            const orderSuccessMessage = document.getElementById("order-success");
+            const packingFees = 5.00;
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Function to update cart display
+            function updateCartDisplay() {
+                cartItemsContainer.innerHTML = "";
+                let subtotal = 0;
+                cart.forEach(item => {
+                    const itemTotal = parseFloat(item.price.replace('₹', '')) * item.quantity;
+                    subtotal += itemTotal;
+
+                    const row = document.createElement("tr");
+                    row.classList.add("cart-item");
+                    row.setAttribute("data-id", item.id);
+                    row.innerHTML = `
+                        <td><img src="${item.img}" width="50"></td>
+                        <td>${item.title}</td>
+                        <td>₹${item.price.replace('₹', '')}</td>
+                        <td><input type="number" class="quantity-input" value="${item.quantity}" min="1"></td>
+                        <td>₹${itemTotal.toFixed(2)}</td>
+                        <td><button class="remove-cart">Remove</button></td>
+                    `;
+                    cartItemsContainer.appendChild(row);
+                });
+
+                const gst = subtotal * 0.10;
+                const totalBill = subtotal + gst + packingFees;
+
+                subtotalElement.textContent = subtotal.toFixed(2);
+                gstElement.textContent = gst.toFixed(2);
+                packingFeesElement.textContent = packingFees.toFixed(2);
+                totalBillElement.textContent = totalBill.toFixed(2);
+            }
+
+            // Initial cart display
+            updateCartDisplay();
+
+            // Event listener for removing items
+            document.addEventListener("click", function (e) {
+                if (e.target.classList.contains("remove-cart")) {
+                    const productId = e.target.closest(".cart-item").getAttribute("data-id");
+                    cart = cart.filter(item => item.id != productId);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartDisplay();
+                }
+            });
+
+            // Event listener for updating quantity
+            document.addEventListener("change", function (e) {
+                if (e.target.classList.contains("quantity-input")) {
+                    const productId = e.target.closest(".cart-item").getAttribute("data-id");
+                    const newQuantity = parseInt(e.target.value);
+                    const item = cart.find(item => item.id == productId);
+
+                    if (item && newQuantity >= 1) {
+                        item.quantity = newQuantity;
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        updateCartDisplay();
+                    }
+                }
+            });
+
+            // Clear cart
+            document.querySelector(".clear-cart").addEventListener("click", function () {
+                localStorage.removeItem("cart");
+                cart = [];
+                updateCartDisplay();
+                alert("Cart has been emptied!");
+            });
+
+            // Checkout
+            document.querySelector(".checkout").addEventListener("click", function () {
+                if (cart.length === 0) {
+                    alert("Your cart is empty!");
+                    return;
+                }
+
+                const address = {
+                    name: document.getElementById("name").value,
+                    street: document.getElementById("street").value,
+                    city: document.getElementById("city").value,
+                    state: document.getElementById("state").value,
+                    zip: document.getElementById("zip").value,
+                    country: document.getElementById("country").value
+                };
+
+                const paymentMode = document.getElementById("payment-mode").value;
+
+                const order = {
+                    id: Date.now(), // Unique order ID
+                    date: new Date().toLocaleDateString(),
+                    total: parseFloat(totalBillElement.textContent),
+                    status: "Placed",
+                    paymentMode: paymentMode,
+                    address: address,
+                    items: cart.map(item => ({
+                        id: item.id,
+                        title: item.title,
+                        price: item.price,
+                        img: item.img,
+                        quantity: item.quantity
+                    }))
+                };
+
+                // Save order to localStorage
+                const orders = JSON.parse(localStorage.getItem("orders")) || [];
+                orders.push(order);
+                localStorage.setItem("orders", JSON.stringify(orders));
+
+                // Clear cart
+                localStorage.removeItem("cart");
+                cart = [];
+                updateCartDisplay();
+                orderSuccessMessage.style.display = "block";
+            });
+        });
+    </script>
+</body>
+</html>

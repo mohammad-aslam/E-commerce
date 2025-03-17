@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <section id="header">
+        <a href="index.html"><img src="img/logo.png" class="logo" alt="Company Logo"></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html"><i class="fas fa-cart-plus"></i></a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="product-details" class="section-p1">
+        <div class="single-pro-image">
+            <img id="product-img" src="img/products/f1.jpg" alt="Product Image">
+        </div>
+        <div class="single-pro-details">
+            <h4 id="product-brand">Brand Name</h4>
+            <h2 id="product-title">Product Title</h2>
+            <h3 id="product-price">$0.00</h3>
+
+            <!-- Size Options for Fashion -->
+            <div id="size-options-fashion" class="size-options" style="display: none;">
+                <h4>Select Size</h4>
+                <select id="fashion-size">
+                    <option value="S">Small (S)</option>
+                    <option value="M">Medium (M)</option>
+                    <option value="L">Large (L)</option>
+                    <option value="XL">Extra Large (XL)</option>
+                </select>
+            </div>
+
+            <!-- Size Options for Footwear -->
+            <div id="size-options-footwear" class="size-options" style="display: none;">
+                <h4>Select Size</h4>
+                <select id="footwear-size">
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <input type="number" value="1" min="1">
+            <button class="normal add-to-cart">Add to Cart</button><br>
+            <br>
+            <h4>Product Details</h4>
+            <p id="product-description">Product description goes here.</p>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get("id");
+
+            const products = {
+                1: { brand: "Generic", title: "Collar Tshirt (Rizim Temu Print Polo-Black)", price: "₹379", img: "img/products/f1.jpg", desc: "Men's Irregular Geometric Pattern and Alphabet Print Sports Collar Tshirt (Rizim Temu Print Polo-Black) Short Sleeve Collar Polo Tshirt & Regular Machine Wash", type: "fashion" },
+                2: { brand: "TAANIZLAND", title: "Avengers Hoodie", price: " ₹489", img: "img/products/f2.jpg", desc: "TAANIZLAND Clothing's Avengers Hoodie for Men Trending Best Winter Wear for Mens and Womens | Avengers Logo Edition Sweatshirt Hood", type: "fashion" },
+                3: { brand: "LAMBOO", title: "Casual Shirt", price: "₹417", img: "img/products/f3.jpg", desc: "LAMBOO Men Stylish Floral Print Fashionable Lycra Blend Half Sleeve Slim Fit Button Down Casual Shirt", type: "fashion" },
+                4: { brand: "Lymio ", title: "Men Cargo", price: " ₹699", img: "img/products/f4.jpg", desc: "Men Cargo || Men Cargo Pants || Men Cargo Pants Cotton || Cargos for Men & Type:Cargo Pants Closure Type:Drawstring Waist & Length:Long &Fit Type:Loose", type: "fashion" },
+                5: { brand: "ZAALIMA", title: "Lehenga Choli And Dupatta Set", price: "₹599", img: "img/products/f5.jpg", desc: "ZAALIMA FASHION WITH Z LOGO Women's Net Embroidered Semi-Stitched Lehenga Choli And Dupatta Set (Free Size).", type: "fashion" },
+                6: { brand: " DSK Studio", title: "short kurti", price: "₹215", img: "img/products/f6.jpg", desc: "Kurta Material :- 100 % Poly Rayon :: Package Contents :- 1 Straight Short Kurta :: Pattern :- Floral Print", type: "fashion" },
+                7: { brand: "Nifty", title: "Denim Crop Jacket", price: "₹629", img: "img/products/f7.jpg", desc: "Nifty Women's Denim Crop Jacket.", type: "fashion" },
+                8: { brand: "Leriya Fashion", title: "A-Line Mini Dress ", price: " ₹499", img: "img/products/f8.jpg", desc: "Leriya Fashion Elegant Women's Long-Sleeve | Floral Print | Button-Down | A-Line Mini Dress for Women", type: "fashion" },
+                9: { brand: "Louis Stich", title: "Formal Shoes ", price: " ₹699", img: "img/products/f9.jpg", desc: "LOUIS STITCH Derby Formal Shoes for Men | Lace-Up Front Cut | Ideal for Business, Casual, Parties (RGFCBU)", type: "footwear" },
+                10: { brand: "Asian", title: "Casual Sneakers ", price: " ₹599", img: "img/products/n2.jpg", desc: "ASIAN Carnival-02 Men's High Top Casual Chunky Fashion Sneakers,Dancing Shoes | Basketball Shoes with Rubber Outsole for Boys", type: "footwear" },
+                11: { brand: "FAUSTO", title: "Loafer Shoes ", price: " ₹1399", img: "img/products/n3.jpg", desc: "FAUSTO Men's Party Formal Velvet Horsebit Buckle Slip On Loafer Shoes", type: "footwear" },
+                12: { brand: "Campus", title: "slides ", price: " ₹499", img: "img/products/n4.jpg", desc: "Campus SL-433 Men's Slip-On Slippers", type: "footwear" },
+                13: { brand: "DFR", title: "Jutis ", price: " ₹789", img: "img/products/n5.jpg", desc: "DFR Women Rajasthani Embroidered with Payal Punjabi Mojari Jutti Jutis Shoe", type: "footwear" },
+                14: { brand: "Skechers", title: "Sneakers Shoes ", price: " ₹1899", img: "img/products/n6.jpg", desc: "Skechers womens Summits 2", type: "footwear" },
+                15: { brand: "Mochi", title: "Heels ", price: " ₹1194", img: "img/products/n7.jpg", desc: "Mochi Women Block Heel Fashion Slip-on", type: "footwear" },
+                16: { brand: "Marc Loire", title: "Heel Sandals ", price: " ₹779", img: "img/products/n8.jpg", desc: "Marc Loire Women's Shimmer Open Toe Comfortable Block Heel Sandals", type: "footwear" },
+                17: { brand: "JBL TUNE", title: "HeadPhones ", price: " ₹5999", img: "img/products/e1.jpg", desc: "JBL Tune 770NC Wireless Over Ear ANC Headphones with Mic, Upto 70 Hrs Battery, Speed Charge : 5 min Charge Gives up to 3H of Playback, Google Fast Pair, Dual Pairing, BT 5.3 (Black)", type: "electronics" },
+                18: { brand: "OnePlus", title: "OnePlus 13 ", price: " 69998", img: "img/products/e2.jpg", desc: "OnePlus 13 | Smarter with OnePlus AI (12GB RAM, 256GB Storage Midnight Ocean)", type: "electronics" },
+                19: { brand: "boat", title: "Stone 352 Speaker ", price: " ₹1599", img: "img/products/e3.jpg", desc: "SboAt Stone 352 Pro Bluetooth Speaker w/ 14W Signature Sound, Up to 12hrs Playback, RGB LEDs, TWS Feature, Built-in Mic, BTv5.3, AUX Port, IPX5 & Type-C Interface(Raging Black)2", type: "electronics" },
+                20: { brand: "Lenovo", title: "LOQ Gaming Laptop ", price: " ₹69990", img: "img/products/e4.jpg", desc: "Lenovo Smartchoice LOQ, Intel Core i5-12450HX, 12th Gen, RTX 3050-6GB, 16GB RAM, 512GB SSD, FHD 144Hz 300Nits, 15.6 /39.6cm, Windows 11, MS Office 21, Grey, 2.4Kg, 83GS003UIN, Gaming Laptop", type: "electronics" },
+                21: { brand: "HP", title: "Victus Gaming Laptops ", price: " ₹89990", img: "img/products/e5.jpg", desc: "HP Victus, 13th Gen Intel Core i7-13620H, 8GB NVIDIA RTX 4060, 16GB DDR4, 1TB SSD (Win11, Office21, Silver, 2.29kg), 144Hz, 9MS, IPS, 15.6-inch(39.6cm), FHD Gaming Laptop, Enhanced Cooling, fa1333TX", type: "electronics" },
+                22: { brand: "Samsung Galaxy", title: "S25 ultra 5G ", price: " ₹141999", img: "img/products/e6.jpg", desc: "Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Gray, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life", type: "electronics" },
+                23: { brand: "Zebronics", title: "Bluetooth Portable Speaker ", price: " ₹499", img: "img/products/e7.jpg", desc: "Zebronics ZEB-COUNTY 3W Wireless Bluetooth Portable Speaker With Supporting Carry Handle, USB, SD Card, AUX, FM & Call Function. (Green)", type: "electronics" },
+                24: { brand: "Boult", title: "Ear Buds TWS ", price: " ₹1399", img: "img/products/e8.jpg", desc: "Boult Audio UFO Truly Wireless in Ear Earbuds with 48H Playtime, Built-in App Support, 45ms Low Latency Gaming, 4 Mics ENC, Breathing LEDs, 13mm Bass Drivers Ear Buds TWS, Made in India (White Opal)", type: "electronics" }
+            };
+
+            if (productId && products[productId]) {
+                document.getElementById("product-brand").textContent = products[productId].brand;
+                document.getElementById("product-title").textContent = products[productId].title;
+                document.getElementById("product-price").textContent = products[productId].price;
+                document.getElementById("product-img").src = products[productId].img;
+                document.getElementById("product-description").textContent = products[productId].desc;
+
+                // Show size options based on product type
+                if (products[productId].type === "fashion") {
+                    document.getElementById("size-options-fashion").style.display = "block";
+                } else if (products[productId].type === "footwear") {
+                    document.getElementById("size-options-footwear").style.display = "block";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

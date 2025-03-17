@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Ecommerce App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .section-p1 {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .profile-container {
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        .profile-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+        .profile-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #088178;
+        }
+        .profile-section .details p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .profile-section .details button, .remove-order {
+            background-color: #088178;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s ease;
+            margin-top: 10px;
+        }
+        .profile-section .details button:hover, .remove-order:hover {
+            background-color: #065f58;
+        }
+        .orders .order {
+            border-bottom: 1px solid #e2e9e1;
+            padding: 10px 0;
+        }
+        .orders .order:last-child {
+            border-bottom: none;
+        }
+        .orders .order p {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: rgb(104, 104, 104);
+        }
+        .order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out the text and image */
+    gap: 20px; /* Increase the gap between text and image */
+    margin-bottom: 15px; /* Add more spacing between items */
+    padding: 10px; /* Add padding for better spacing */
+    border: 1px solid #e2e9e1; /* Add a border for better separation */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background for contrast */
+}
+
+.order-item img {
+    width: 80px; /* Increase image size */
+    height: 80px; /* Increase image size */
+    object-fit: cover;
+    border-radius: 8px; /* Rounded corners for the image */
+    order: 2; /* Move the image to the right */
+}
+
+.order-item div {
+    flex: 1; /* Allow the text to take up remaining space */
+    order: 1; /* Move the text to the left */
+}
+
+.order-item p {
+    margin: 0; /* Remove default margins */
+    font-size: 16px; /* Increase font size for better readability */
+    color: #333; /* Darker text for better contrast */
+}
+
+.order-item p strong {
+    color: #088178; /* Highlight the product title */
+}
+    </style>
+</head>
+<body>
+    <section id="header">
+        <a href="index.html"><img src="img/logo.png" class="logo" alt="Company Logo"></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html"><i class="fas fa-cart-plus"></i></a></li>
+                <li><a class="active" href="profile.html"><i class="fas fa-user"></i></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="section-p1">
+        <div class="profile-container">
+            <!-- Personal Details -->
+            <div class="profile-section">
+                <h2>Personal Details</h2>
+                <div class="details">
+                    <p><strong>Name:</strong> <span id="user-name">John Doe</span></p>
+                    <p><strong>Email:</strong> <span id="user-email">john.doe@example.com</span></p>
+                    <p><strong>Phone:</strong> <span id="user-phone">+123 456 7890</span></p>
+                    <p><strong>Address:</strong> <span id="user-address">123 Street Name, City, Country</span></p>
+                    <button class="normal" onclick="editProfile()">Edit Profile</button>
+                </div>
+            </div>
+
+            <!-- Orders -->
+            <div class="profile-section">
+                <h2>My Orders</h2>
+                <div class="orders" id="orders">
+                    <!-- Orders will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        // Load user details from localStorage
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = JSON.parse(localStorage.getItem("user")) || {
+                name: "John Doe",
+                email: "john.doe@example.com",
+                phone: "+123 456 7890",
+                address: "123 Street Name, City, Country"
+            };
+            document.getElementById("user-name").textContent = user.name;
+            document.getElementById("user-email").textContent = user.email;
+            document.getElementById("user-phone").textContent = user.phone;
+            document.getElementById("user-address").textContent = user.address;
+
+            // Load orders from localStorage
+            loadOrders();
+        });
+
+        // Function to load and display orders
+        function loadOrders() {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const ordersContainer = document.getElementById("orders");
+    ordersContainer.innerHTML = ""; // Clear existing orders
+
+    orders.forEach(order => {
+        const orderDiv = document.createElement("div");
+        orderDiv.classList.add("order");
+        orderDiv.innerHTML = `
+            <p><strong>Order ID:</strong> ${order.id}</p>
+            <p><strong>Date:</strong> ${order.date}</p>
+            <p><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
+            <p><strong>Status:</strong> ${order.status}</p>
+            <p><strong>Payment Mode:</strong> ${order.paymentMode}</p>
+            <div class="shipping-address">
+                <h4>Shipping Address</h4>
+                <p><strong>Name:</strong> ${order.address.name}</p>
+                <p><strong>Street:</strong> ${order.address.street}</p>
+                <p><strong>City:</strong> ${order.address.city}</p>
+                <p><strong>State:</strong> ${order.address.state}</p>
+                <p><strong>ZIP Code:</strong> ${order.address.zip}</p>
+                <p><strong>Country:</strong> ${order.address.country}</p>
+            </div>
+            <div class="order-items">
+                <h4>Order Items</h4>
+                ${order.items.map(item => `
+                    <div class="order-item">
+                        <img src="${item.img}" alt="${item.title}">
+                        <div>
+                            <p><strong>${item.title}</strong></p>
+                            <p>₹${item.price.replace('₹', '')} x ${item.quantity}</p>
+                        </div>
+                    </div>
+                `).join("")}
+            </div>
+            <button class="remove-order" onclick="removeOrder('${order.id}')">Remove Order</button>
+        `;
+        ordersContainer.appendChild(orderDiv);
+    });
+}
+
+        // Function to remove an order
+        function removeOrder(orderId) {
+    // Convert orderId to a number (if it's stored as a string)
+    orderId = Number(orderId);
+
+    // Get the current orders from localStorage
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    // Filter out the order with the matching orderId
+    orders = orders.filter(order => order.id !== orderId);
+
+    // Save the updated orders array back to localStorage
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    // Refresh the orders list in the UI
+    loadOrders();
+
+    // Notify the user
+    alert("Order removed successfully!");
+}
+
+        // Edit Profile Function
+        function editProfile() {
+            const name = prompt("Enter your name:", document.getElementById("user-name").textContent);
+            const email = prompt("Enter your email:", document.getElementById("user-email").textContent);
+            const phone = prompt("Enter your phone:", document.getElementById("user-phone").textContent);
+            const address = prompt("Enter your address:", document.getElementById("user-address").textContent);
+
+            if (name && email && phone && address) {
+                const user = { name, email, phone, address };
+                localStorage.setItem("user", JSON.stringify(user));
+                document.getElementById("user-name").textContent = name;
+                document.getElementById("user-email").textContent = email;
+                document.getElementById("user-phone").textContent = phone;
+                document.getElementById("user-address").textContent = address;
+            }
+        }
+    </script>
+</body>
+</html>
